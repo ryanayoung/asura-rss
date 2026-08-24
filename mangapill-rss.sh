@@ -9,7 +9,7 @@ time=$(date -R)
 
 to_search=$(cat manga)
 
-data=$(curl "$base_url" | sed '1,/Recently Released Chapters/d ; /These shortcuts/,$d' | tr -d '\n' | sed 's/<div class="mt-1.5 text-xs text-secondary">/\n/g' | sed -nE 's|.*href="([^"]+)".*alt="([^"]+)".*|\1\t\2|p')
+data=$(curl -L "$base_url" | sed '1,/Recently Released Chapters/d ; /These shortcuts/,$d' | tr -d '\n' | sed 's/<div  class="mt-1.5 text-xs text-secondary">/\n/g' | sed -nE 's|.*href="([^"]+)".*alt="([^"]+)".*|\1\t\2|p')
 sed '/<\/channel>/d; /<\/rss>/d' -i mangapill.xml
 for i in $to_search; do
 	match=$(printf "%s\n" "$data" | grep "${i}-chapter")
